@@ -186,8 +186,23 @@
         <section class="pt-md-20 pb-md-105 pt-10 pb-100 feature-area-3">
             <div class="container">
                 <div class="section-title text-center text-sm-start border-bottom-dark pb-1 mb-lg-5 mb-3">
-                    <h2 class="wow fadeInUp text-50 ls-2">수입차 보험료 비교 신청 누적 <span class="mt_color2">6,429</span>명</h2>
-                </div>
+                    <h2 class="wow fadeInUp text-50 ls-2">수입차 보험료 비교 신청 누적 <span id="random-count" class="mt_color2">8,000</span>명
+    </h2>
+</div>
+
+<script>
+    (function() {
+        // 1. 설정: 최소값 8,000 ~ 최대값 30,000
+        const min = 8000;
+        const max = 30000;
+
+        // 2. 랜덤 숫자 생성
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        // 3. 숫자에 콤마(,)를 넣고 화면에 표시 (예: 25,432)
+        document.getElementById('random-count').innerText = randomNumber.toLocaleString();
+    })();
+</script>
                 <div id="mainForm" class="mainFormWrap">
                     <div class="mainFormArea row">
                         <div class="mainTextCell title_font text-26 mtext-26 text-center"><span class="mt_color">수입차</span>도<br><span class="mt_color8">제대로</span> 알아보자</div>
@@ -1020,4 +1035,5 @@
 </html>
 
 	
+
 
