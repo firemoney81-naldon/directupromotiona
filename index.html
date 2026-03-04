@@ -822,6 +822,7 @@
 
 
 
+
 <style>
     /* Pretendard 폰트 불러오기 (PC/모바일 공용 폰트) */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css');
@@ -971,7 +972,7 @@
             실시간 무료 비교 계산 <br>
             <span id="dynamic-content-wrap">
                 <span id="dynamic-date"></span> <!-- 이 영역에 날짜가 표시됩니다. -->
-                <span id="application-text">오늘의 신청</span> 
+                <span id="application-text">어제의 신청</span> 
                 <span class="highlight" id="random-count">0</span>명
             </span>
         </h2>
@@ -1040,7 +1041,7 @@
                 "무료 조회하러 가기",
                 "나에게 맞는 솔루션 무료로 조회하기",
                 "맞춤 견적 무료로 받으러 가기",
-                "맞춤 솔루션 무료로 받아보기",
+                "나만의 맞춤 솔루션 무료로 받아보기",
                 "무료 컨설팅 받아보기"
             ];
             const ctaButtonElement = document.querySelector('.bridge-button');
@@ -1083,13 +1084,13 @@
                 // 2. 저장된 숫자가 없으면 (새로운 세션), 요일별 범위에 따라 새로운 숫자를 생성합니다.
                 // 일일 신청량에 적절한 수준으로 랜덤 숫자 범위 조정 (검색자 신뢰도 고려)
                 const ranges = [
-                    [150, 230], // 일요일: [min, max]
+                    [110, 180], // 일요일: [min, max]
                     [130, 230],   // 월요일
                     [180, 280],  // 화요일
-                    [180, 330], // 수요일
-                    [230, 380], // 목요일
-                    [180, 280],  // 금요일
-                    [160, 230]   // 토요일
+                    [280, 330], // 수요일
+                    [330, 380], // 목요일
+                    [230, 280],  // 금요일
+                    [180, 230]   // 토요일
                 ];
                 const [min, max] = ranges[dayOfWeek];
                 targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1305,6 +1306,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
