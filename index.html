@@ -68,7 +68,7 @@
 <meta name="format-detection" content="telephone=no"/>
 
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 	
     <!-- JSON-LD Structured Data for SEO (Optimized for Naver/Google Snippets) -->
@@ -963,15 +963,15 @@
         <strong>최종 페이지</strong>로 이동을 준비하고 있습니다.
     </p>
 
-    <!-- [수정] target="_blank" 추가하여 새 창으로 열기 -->
-    <a href="https://directin.kr/?num=35445436" class="bridge-button" target="_blank" rel="noopener noreferrer"></a>
+    <!-- [수정] target="_blank" 속성을 제거하고 href를 JavaScript에서 처리 -->
+    <a href="javascript:void(0);" class="bridge-button" id="cta-button"></a>
 
     <div class="dynamic-counter-area">
         <h2>
-            실시간 무료 비교 계산 <br>
+            실시간 무료 조회 <br>
             <span id="dynamic-content-wrap">
-                <span id="dynamic-date"></span>
-                <span id="application-text">오늘의 신청</span> 
+                <span id="dynamic-date"></span> <!-- 이 영역에 날짜가 표시됩니다. -->
+                <span id="application-text">오늘 신청</span> 
                 <span class="highlight" id="random-count">0</span>명
             </span>
         </h2>
@@ -993,11 +993,29 @@
         // ----------------------------------------------------------------------
         const targetUrl = 'https://directin.kr/?num=35445436';
 
+        // 1. 페이지 로드 시점에 브라우저 히스토리에 새로운 항목을 추가합니다.
         history.pushState({}, "", location.href);
 
+        // 2. 'popstate' 이벤트 리스너를 추가합니다.
         window.addEventListener('popstate', function() {
+            // 3. 뒤로가기 버튼이 눌리면 targetUrl로 이동합니다.
             location.replace(targetUrl);
         });
+
+        // ----------------------------------------------------------------------
+        // [핵심 수정] CTA 버튼 클릭 시 새 창 열기 및 현재 페이지 히스토리 제거
+        // ----------------------------------------------------------------------
+        const ctaButtonElement = document.getElementById('cta-button');
+        if (ctaButtonElement) {
+            ctaButtonElement.addEventListener('click', function(e) {
+                // 새 창으로 열기 (target="_blank" 대신 window.open 사용)
+                window.open(targetUrl, '_blank');
+                
+                // 현재 페이지의 URL을 히스토리에서 제거하고 targetUrl로 리다이렉션
+                // 이렇게 하면 사용자가 뒤로가기를 눌러도 무한 루프에 빠지지 않고 targetUrl로 이동합니다.
+                location.replace(targetUrl);
+            });
+        }
 
         // ----------------------------------------------------------------------
         // 기존 스크립트 로직 (기존 코드와 동일)
@@ -1019,11 +1037,11 @@
         // B. CTA 버튼 문구 랜덤 선택
         function initializeCtaText() {
             const ctaPhrases = [
-                "무료 조회하러 가기",
-                "나에게 맞는 솔루션 조회하기",
+                "무료 상담 신청하러 가기",
+                "나에게 맞는 솔루션 무료로 확인하기",
                 "맞춤 견적 무료로 받으러 가기",
-                "무료 조회 시작하기",
-                "나의 맞춤 솔루션 조회",
+                "전문가와 무료상담 시작하기",
+                "나의 맞춤 솔루션 무료로 받아보기",
                 "무료 컨설팅 지금 신청"
             ];
             const ctaButtonElement = document.querySelector('.bridge-button');
@@ -1064,15 +1082,15 @@
 
             if (!targetNumber) {
                 // 2. 저장된 숫자가 없으면 (새로운 세션), 요일별 범위에 따라 새로운 숫자를 생성합니다.
-                // [수정] 일일 신청량에 적절한 수준으로 랜덤 숫자 범위 조정 (검색자 신뢰도 고려)
+                // 일일 신청량에 적절한 수준으로 랜덤 숫자 범위 조정 (검색자 신뢰도 고려)
                 const ranges = [
-                    [130, 280], // 일요일: [min, max]
-                    [180, 330],   // 월요일
-                    [230, 350],  // 화요일
-                    [380, 460], // 수요일
-                    [320, 390], // 목요일
-                    [230, 380],  // 금요일
-                    [180, 310]   // 토요일
+                    [150, 230], // 일요일: [min, max]
+                    [130, 250],   // 월요일
+                    [180, 280],  // 화요일
+                    [180, 330], // 수요일
+                    [230, 380], // 목요일
+                    [180, 280],  // 금요일
+                    [150, 250]   // 토요일
                 ];
                 const [min, max] = ranges[dayOfWeek];
                 targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1108,6 +1126,8 @@
     });
 </script>
 
+
+	
 	
 	
 	
@@ -1285,6 +1305,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
