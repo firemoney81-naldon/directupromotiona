@@ -74,20 +74,20 @@
     /* Pretendard 폰트 불러오기 */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css');
 
-    body { 
-        background-color: #f4f7f9; 
-        opacity: 0; 
+    body {
+        background-color: #f4f7f9;
+        opacity: 0;
         transition: opacity 0.5s ease-in-out;
         display: flex;
         flex-direction: column;
-        min-height: 100vh; 
+        min-height: 100vh;
         margin: 0;
         font-family: 'Pretendard', sans-serif;
     }
-    
+
     .bridge-container {
-        order: -1; 
-        margin: 60px auto; 
+        order: -1;
+        margin: 60px auto;
         padding: 70px 40px;
         text-align: center;
         background: #ffffff;
@@ -121,7 +121,7 @@
     .dynamic-counter-area {
         margin-top: 40px;
         padding-top: 25px;
-        border-top: 1px solid #f0f0f0; 
+        border-top: 1px solid #f0f0f0;
     }
 
     .dynamic-counter-area h2 {
@@ -137,19 +137,19 @@
     }
 
     .dynamic-counter-area .highlight {
-        font-size: 30px; 
+        font-size: 30px;
         font-weight: 900;
-        color: #007bff; 
+        color: #007bff;
     }
 
     .ad-disclaimer {
-        font-size: 10pt; 
-        color: #555555; 
+        font-size: 10pt;
+        color: #555555;
         line-height: 1.6;
         word-break: keep-all;
         margin-top: 60px;
         padding-top: 25px;
-        border-top: 1px solid #f0f0f0; 
+        border-top: 1px solid #f0f0f0;
     }
 
     @media (max-width: 700px) {
@@ -168,7 +168,7 @@
 <div class="bridge-container">
     <h1 id="bridge-title">잠시만 확인해주세요!</h1>
     <p class="main-text" id="bridge-desc">
-        성공적인 상담 신청을 위해 <br> 
+        성공적인 상담 신청을 위해 <br>
         <strong>최종 페이지</strong>로 이동을 준비하고 있습니다.
     </p>
 
@@ -178,8 +178,8 @@
         <h2>
             실시간 무료 비교 계산<br>
             <span class="dynamic-content-wrap">
-                <span id="dynamic-date"></span> 
-                <span id="application-text">오늘의 조회</span> 
+                <span id="dynamic-date"></span>
+                <span id="application-text">오늘의 조회</span>
                 <span class="highlight" id="random-count">0</span>명
             </span>
         </h2>
@@ -195,11 +195,8 @@
         // 1. CTA 버튼 클릭 제어 (이동 금지 및 새창 로직)
         const ctaLink = document.getElementById('cta-link');
         ctaLink.addEventListener('click', function(e) {
-            // 현재 페이지가 바뀌는 것을 방지하고 새 창에서 열리도록 보장
-            // target="_blank"가 기본이지만, 일부 환경에서 현재창이 바뀌는 것을 방어합니다.
             console.log("신청 페이지로 연결되었습니다.");
-            
-            // 클릭 후 브릿지 페이지의 문구를 변경하여 중복 클릭 방지 및 안내 강화
+
             setTimeout(() => {
                 document.getElementById('bridge-title').innerText = "신청 페이지가 열렸습니다.";
                 document.getElementById('bridge-desc').innerHTML = "새로 열린 창에서 상담 신청을 완료해주세요.<br>창이 열리지 않았다면 버튼을 다시 눌러주세요.";
@@ -230,26 +227,49 @@
         ctaLink.textContent = ctaPhrases[Math.floor(Math.random() * ctaPhrases.length)];
 
         // C. 날짜 업데이트
-const today = new Date();
+        const today = new Date();
+        document.getElementById('dynamic-date').innerText = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
-document.getElementById('dynamic-date').innerText = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+        // D. 숫자 애니메이션 (수정된 부분)
+        const targetElement = document.getElementById('random-count');
 
-        // D. 숫자 애니메이션
-const targetElement = document.getElementById('random-count');
-// [일, 월, 화, 수, 목, 금, 토] 순서로 범위 설정 (0=일요일, 6=토요일)
-const ranges = [
-    [100, 230], // 일요일
-    [300, 480], // 월요일
-    [380, 530], // 화요일
-    [430, 580], // 수요일
-    [480, 630], // 목요일
-    [300, 800], // 금요일
-    [350, 530]  // 토요일
-];
+        // [일, 월, 화, 수, 목, 금, 토] 순서로 범위 설정 (0=일요일, 6=토요일)
+        const ranges = [
+            [100, 230], // 일요일
+            [300, 480], // 월요일
+            [380, 530], // 화요일
+            [430, 580], // 수요일
+            [480, 630], // 목요일
+            [300, 800], // 금요일
+            [350, 530]  // 토요일
+        ];
 
-const [min, max] = ranges[today.getDay()];
-const targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-        
+        // 1. 오늘 날짜를 YYYY-MM-DD 형식으로 변환 (localStorage 키로 사용)
+        const todayDateString = today.toISOString().split('T')[0];
+
+        // 2. localStorage에서 저장된 데이터 확인
+        const storedCounterData = localStorage.getItem('dailyCounterData');
+        let targetNumber;
+
+        if (storedCounterData) {
+            const parsedData = JSON.parse(storedCounterData);
+            // 3. 오늘 날짜와 저장된 날짜가 일치하는지 확인
+            if (parsedData.date === todayDateString) {
+                targetNumber = parsedData.value;
+            } else {
+                // 4. 날짜가 다르면 새로운 숫자 생성 및 저장
+                const [min, max] = ranges[today.getDay()];
+                targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+                localStorage.setItem('dailyCounterData', JSON.stringify({ value: targetNumber, date: todayDateString }));
+            }
+        } else {
+            // 5. localStorage에 데이터가 없으면 초기 생성 및 저장
+            const [min, max] = ranges[today.getDay()];
+            targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+            localStorage.setItem('dailyCounterData', JSON.stringify({ value: targetNumber, date: todayDateString }));
+        }
+
+        // 6. 애니메이션 실행
         let start = null;
         function step(timestamp) {
             if (!start) start = timestamp;
@@ -260,7 +280,6 @@ const targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
         window.requestAnimationFrame(step);
     });
 </script>
-
 
 	
 
@@ -440,6 +459,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
