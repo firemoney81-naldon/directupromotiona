@@ -968,10 +968,10 @@
 
     <div class="dynamic-counter-area">
         <h2>
-            실시간 무료 조회 <br>
+            실시간 무료 비교 계산 <br>
             <span id="dynamic-content-wrap">
                 <span id="dynamic-date"></span> <!-- 이 영역에 날짜가 표시됩니다. -->
-                <span id="application-text">오늘 신청</span> 
+                <span id="application-text">오늘의 신청</span> 
                 <span class="highlight" id="random-count">0</span>명
             </span>
         </h2>
@@ -1037,12 +1037,11 @@
         // B. CTA 버튼 문구 랜덤 선택
         function initializeCtaText() {
             const ctaPhrases = [
-                "무료 상담 신청하러 가기",
-                "나에게 맞는 솔루션 무료로 확인하기",
+                "무료 조회하러 가기",
+                "나에게 맞는 솔루션 무료로 조회하기",
                 "맞춤 견적 무료로 받으러 가기",
-                "전문가와 무료상담 시작하기",
-                "나의 맞춤 솔루션 무료로 받아보기",
-                "무료 컨설팅 지금 신청"
+                "맞춤 솔루션 무료로 받아보기",
+                "무료 컨설팅 받아보기"
             ];
             const ctaButtonElement = document.querySelector('.bridge-button');
             if (ctaButtonElement) {
@@ -1125,6 +1124,7 @@
         animateCount();
     });
 </script>
+
 
 
 	
@@ -1305,6 +1305,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
