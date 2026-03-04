@@ -828,8 +828,11 @@
 
     body {
         background-color: #f4f7f9;
-        /* opacity: 0; */ /* 페이지가 숨겨져 있다가 나타나는 애니메이션을 제거합니다. */
-        /* transition: opacity 0.5s ease-in-out; */ /* 전환 애니메이션도 제거합니다. */
+        /* [핵심 수정] 페이지 내용을 초기에 숨깁니다. */
+        opacity: 0;
+        /* [핵심 수정] 부드러운 전환 효과를 적용합니다. */
+        transition: opacity 0.5s ease-in-out;
+        /* 기존 flex 속성은 유지 */
         display: flex;
         flex-direction: column;
         min-height: 100vh;
@@ -942,7 +945,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // document.body.style.opacity = '1'; /* 즉시 표시되도록 이 코드를 제거합니다. */
+        // [핵심 수정] 페이지 로드 완료 후 0.5초 동안 서서히 나타나는 애니메이션을 적용합니다.
+        document.body.style.opacity = '1';
 
         // 1. CTA 버튼 클릭 제어 (이동 금지 및 새창 로직)
         const ctaLink = document.getElementById('cta-link');
@@ -1032,7 +1036,6 @@
         window.requestAnimationFrame(step);
     });
 </script>
-	
 
 
 
@@ -1212,6 +1215,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
