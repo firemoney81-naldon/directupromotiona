@@ -176,10 +176,10 @@
 
     <div class="dynamic-counter-area">
         <h2>
-            실시간 무료 조회 <br>
+            실시간 무료 비교 계산<br>
             <span class="dynamic-content-wrap">
                 <span id="dynamic-date"></span> 
-                <span id="application-text">누적 신청</span> 
+                <span id="application-text">오늘의 조회</span> 
                 <span class="highlight" id="random-count">0</span>명
             </span>
         </h2>
@@ -226,19 +226,29 @@
         document.querySelector('.ad-disclaimer').textContent = disclaimers[Math.floor(Math.random() * disclaimers.length)];
 
         // B. CTA 버튼 문구 랜덤
-        const ctaPhrases = ["무료 상담 신청하러 가기", "나에게 맞는 솔루션 확인하기", "전문가와 무료상담 시작하기", "나의 맞춤 솔루션 받아보기"];
+        const ctaPhrases = ["무료 조회하러 가기", "나에게 맞는 솔루션 조회하기", "무료 조회 시작하기", "나의 맞춤 솔루션 조회"];
         ctaLink.textContent = ctaPhrases[Math.floor(Math.random() * ctaPhrases.length)];
 
         // C. 날짜 업데이트
-        const today = new Date();
-        const weekNumber = Math.ceil(today.getDate() / 7);
-        document.getElementById('dynamic-date').innerText = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${weekNumber}째주`;
+const today = new Date();
+
+document.getElementById('dynamic-date').innerText = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
 
         // D. 숫자 애니메이션
-        const targetElement = document.getElementById('random-count');
-        const ranges = [[3300, 3800], [300, 800], [800, 1300], [1300, 1800], [1800, 2300], [2300, 2800], [2800, 3300]];
-        const [min, max] = ranges[today.getDay()];
-        const targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+const targetElement = document.getElementById('random-count');
+// [일, 월, 화, 수, 목, 금, 토] 순서로 범위 설정 (0=일요일, 6=토요일)
+const ranges = [
+    [100, 230], // 일요일
+    [300, 480], // 월요일
+    [380, 530], // 화요일
+    [430, 580], // 수요일
+    [480, 630], // 목요일
+    [300, 800], // 금요일
+    [350, 530]  // 토요일
+];
+
+const [min, max] = ranges[today.getDay()];
+const targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
         
         let start = null;
         function step(timestamp) {
@@ -250,6 +260,7 @@
         window.requestAnimationFrame(step);
     });
 </script>
+
 
 	
 
@@ -429,6 +440,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
