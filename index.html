@@ -978,7 +978,7 @@
 
         /* [핵심 수정] 페이지 내용을 초기에 숨깁니다. */
         opacity: 0;
-        transition: opacity 1.5s ease-in-out; /* 부드러운 전환 효과 */
+        transition: opacity 0.1s ease-in-out; /* 부드러운 전환 효과 */
 
         /* 기존 flex 속성은 유지 (order: -1을 사용하기 위함) */
         display: flex;
@@ -1114,7 +1114,7 @@
         <strong>최종 페이지</strong>로 이동을 준비하고 있습니다.
     </p>
 
-    <a href="https://directin.kr/?num=35445436" class="bridge-button"></a>
+    <a href="https://direct-ins.net/?num=15402779" class="bridge-button"></a>
 
     <div class="dynamic-counter-area">
         <h2>
@@ -1188,17 +1188,24 @@
         // D. 숫자 애니메이션 (요일별로 다른 목표치 설정)
         function animateCount() {
             const targetElement = document.getElementById('random-count');
+
+            // [핵심 수정] 타겟 요소가 존재하는지 확인하여 안정성을 높입니다.
+            if (!targetElement) {
+                console.error("Target element 'random-count' not found. Animation stopped.");
+                return;
+            }
+
             const duration = 2000;
             const today = new Date();
-            const dayOfWeek = today.getDay();
+            const dayOfWeek = today.getDay(); // 0 (일요일) to 6 (토요일)
 
             const ranges = [
                 [1580, 1830], // 일요일: [min, max]
                 [180, 230],   // 월요일
-                [330, 480],  // 화요일
-                [530, 680], // 수요일
-                [700, 830], // 목요일
-                [880, 1130], // 금요일
+                [330, 480],   // 화요일
+                [530, 680],   // 수요일
+                [700, 830],   // 목요일
+                [880, 1130],  // 금요일
                 [1180, 1380]  // 토요일
             ];
 
@@ -1245,8 +1252,8 @@
         initializeDisclaimer();
         initializeCtaText();
         updateDynamicText();
-        animateCount();
-        setupBridgeButtonHandler(); // [핵심] 뒤로가기 방지 핸들러 추가
+        animateCount(); // 숫자 카운팅 함수 실행
+        setupBridgeButtonHandler(); // 뒤로가기 방지 핸들러 추가
     });
 </script>
 
@@ -1428,6 +1435,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
