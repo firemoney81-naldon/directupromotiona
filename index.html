@@ -1084,12 +1084,12 @@
                 // 일일 신청량에 적절한 수준으로 랜덤 숫자 범위 조정 (검색자 신뢰도 고려)
                 const ranges = [
                     [150, 230], // 일요일: [min, max]
-                    [130, 250],   // 월요일
+                    [130, 230],   // 월요일
                     [180, 280],  // 화요일
                     [180, 330], // 수요일
                     [230, 380], // 목요일
                     [180, 280],  // 금요일
-                    [150, 250]   // 토요일
+                    [160, 230]   // 토요일
                 ];
                 const [min, max] = ranges[dayOfWeek];
                 targetNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1305,6 +1305,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
