@@ -825,31 +825,29 @@
 <style>
     /* Pretendard 폰트 불러오기 */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css');
-	
-    body { 
-        background-color: #f4f7f9; 
 
-        /* [핵심 수정] 페이지 내용을 초기에 숨깁니다. */
-        opacity: 0; 
-        transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
-
-        /* 기존 flex 속성은 유지 (order: -1을 사용하기 위함) */
+    body {
+        background-color: #f4f7f9;
+        /* opacity: 0; */ /* 페이지가 숨겨져 있다가 나타나는 애니메이션을 제거합니다. */
+        /* transition: opacity 0.5s ease-in-out; */ /* 전환 애니메이션도 제거합니다. */
         display: flex;
         flex-direction: column;
-        min-height: 100vh; 
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Pretendard', sans-serif;
     }
-    
+
     .bridge-container {
-        /* [핵심 유지] order: -1; 속성을 그대로 사용합니다. */
-        order: -1; 
-        /* 가로 중앙 정렬 및 상하 여백 설정 */
-        margin: 60px auto; 
+        order: -1;
+        margin: 60px auto;
         padding: 70px 40px;
         text-align: center;
         background: #ffffff;
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
         border: 1px solid #efefef;
+        max-width: 600px;
+        width: 90%;
     }
 
     .bridge-button {
@@ -926,7 +924,7 @@
         <strong>최종 페이지</strong>로 이동을 준비하고 있습니다.
     </p>
 
-    <a href="https://directin.kr/?num=35445436" target="_blank" class="bridge-button" id="cta-link"></a>
+    <a href="이동할마지막페이지주소" target="_blank" class="bridge-button" id="cta-link"></a>
 
     <div class="dynamic-counter-area">
         <h2>
@@ -944,7 +942,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        document.body.style.opacity = '1';
+        // document.body.style.opacity = '1'; /* 즉시 표시되도록 이 코드를 제거합니다. */
 
         // 1. CTA 버튼 클릭 제어 (이동 금지 및 새창 로직)
         const ctaLink = document.getElementById('cta-link');
@@ -1034,8 +1032,9 @@
         window.requestAnimationFrame(step);
     });
 </script>
-
 	
+
+
 
 	
 	
@@ -1213,6 +1212,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
