@@ -822,33 +822,34 @@
 
 
 
-	
 <style>
     /* Pretendard 폰트 불러오기 */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css');
+	
+    body { 
+        background-color: #f4f7f9; 
 
-    body {
-        background-color: #f4f7f9;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
+        /* [핵심 수정] 페이지 내용을 초기에 숨깁니다. */
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
+
+        /* 기존 flex 속성은 유지 (order: -1을 사용하기 위함) */
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        font-family: 'Pretendard', sans-serif;
+        min-height: 100vh; 
     }
-
+    
     .bridge-container {
-        order: -1;
-        margin: 60px auto;
+        /* [핵심 유지] order: -1; 속성을 그대로 사용합니다. */
+        order: -1; 
+        /* 가로 중앙 정렬 및 상하 여백 설정 */
+        margin: 60px auto; 
         padding: 70px 40px;
         text-align: center;
         background: #ffffff;
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
         border: 1px solid #efefef;
-        max-width: 600px;
-        width: 90%;
     }
 
     .bridge-button {
@@ -1212,6 +1213,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
