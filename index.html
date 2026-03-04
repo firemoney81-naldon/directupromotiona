@@ -823,36 +823,41 @@
 
 
 <style>
-    /* Pretendard 폰트 불러오기 */
+    /* Pretendard 폰트 불러오기 (PC/모바일 공용 폰트) */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css');
 
-    body {
-        background-color: #f4f7f9;
+    body { 
+        background-color: #f4f7f9; 
+
         /* [핵심 수정] 페이지 내용을 초기에 숨깁니다. */
-        opacity: 0;
-        /* [핵심 수정] 부드러운 전환 효과를 적용합니다. */
-        transition: opacity 0.5s ease-in-out;
-        /* 기존 flex 속성은 유지 */
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
+
+        /* 기존 flex 속성은 유지 (order: -1을 사용하기 위함) */
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        font-family: 'Pretendard', sans-serif;
+        min-height: 100vh; 
     }
-
+    
+    /* ---------------------------------------------------------------------- */
+    /* [핵심] 브릿지 컨테이너 스타일 (order: -1 유지) */
+    /* ---------------------------------------------------------------------- */
     .bridge-container {
-        order: -1;
-        margin: 60px auto;
+        /* [핵심 유지] order: -1; 속성을 그대로 사용합니다. */
+        order: -1; 
+        /* 가로 중앙 정렬 및 상하 여백 설정 */
+        margin: 60px auto; 
         padding: 70px 40px;
         text-align: center;
         background: #ffffff;
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
         border: 1px solid #efefef;
-        max-width: 600px;
-        width: 90%;
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* CTA 버튼 스타일 (기존과 동일) */
+    /* ---------------------------------------------------------------------- */
     .bridge-button {
         display: inline-block;
         padding: 18px 45px;
@@ -864,8 +869,6 @@
         transition: all 0.2s ease-in-out;
         font-size: 20px;
         box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
-        cursor: pointer;
-        border: none;
     }
 
     .bridge-button:hover {
@@ -873,10 +876,13 @@
         transform: translateY(-2px);
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* 동적 카운터 영역 스타일 (기존과 동일) */
+    /* ---------------------------------------------------------------------- */
     .dynamic-counter-area {
         margin-top: 40px;
         padding-top: 25px;
-        border-top: 1px solid #f0f0f0;
+        border-top: 1px solid #f0f0f0; 
     }
 
     .dynamic-counter-area h2 {
@@ -885,39 +891,68 @@
         color: #222;
         line-height: 1.5;
         letter-spacing: -0.5px;
+        text-align: center; 
     }
 
+    /* [핵심 수정] 줄바꿈 방지 그룹 스타일 (기존과 동일) */
     .dynamic-content-wrap {
-        white-space: nowrap;
+        white-space: nowrap; /* 이 그룹 내의 텍스트는 줄바꿈되지 않도록 강제 */
     }
 
     .dynamic-counter-area .highlight {
-        font-size: 30px;
+        font-size: 30px; 
         font-weight: 900;
-        color: #007bff;
+        color: #007bff; 
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* 광고 고지 문구 스타일 (기존과 동일) */
+    /* ---------------------------------------------------------------------- */
     .ad-disclaimer {
-        font-size: 10pt;
-        color: #555555;
+        font-size: 10pt; 
+        color: #555555; 
         line-height: 1.6;
         word-break: keep-all;
         margin-top: 60px;
         padding-top: 25px;
-        border-top: 1px solid #f0f0f0;
+        border-top: 1px solid #f0f0f0; 
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* 모바일 반응형 최적화 (700px 이하) (기존과 동일) */
+    /* ---------------------------------------------------------------------- */
     @media (max-width: 700px) {
-        .bridge-container { padding: 40px 20px; }
-        .bridge-container h1 { font-size: 28px; }
-        .bridge-button { padding: 15px 30px; font-size: 18px; }
-        .dynamic-counter-area h2 { font-size: 20px; }
-        .dynamic-counter-area .highlight { font-size: 24px; }
+        .bridge-container {
+            max-width: 90%; 
+            padding: 40px 20px; 
+        }
+        .bridge-container h1 {
+            font-size: 28px;
+        }
+        .bridge-container p.main-text {
+            font-size: 18px;
+        }
+        .bridge-button {
+            padding: 15px 30px;
+            font-size: 18px;
+        }
+        /* 모바일에서 텍스트가 깔끔하게 보이도록 폰트 크기 조정 */
+        .dynamic-counter-area h2 {
+            font-size: 20px; 
+        }
+        .dynamic-counter-area .highlight {
+            font-size: 24px; 
+        }
     }
 </style>
 
-<div style="padding: 20px; text-align: center;">
+<!-- [핵심] 기존 페이지 내용. 브릿지 컨테이너가 order: -1; 속성을 갖기 때문에
+     이 내용보다 시각적으로는 아래에 표시됩니다. -->
+<div style="padding: 20px; text-align: center; height: 1000px;">
     <p>원래 페이지의 기존 내용들이 여기에 위치합니다.</p>
+    <p>이 내용은 스크롤되지만 브릿지 컨테이너는 화면 중앙에 고정됩니다.</p>
+    <p style="height: 1000px;"></p>
+    <p>페이지 하단</p>
 </div>
 
 <div class="bridge-container">
@@ -1036,7 +1071,6 @@
         window.requestAnimationFrame(step);
     });
 </script>
-
 
 
 	
@@ -1215,6 +1249,7 @@ function setMetaTag(attrType, attrName, content) {
 </html>
 
 	
+
 
 
 
