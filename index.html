@@ -1267,7 +1267,7 @@
 
 
 
-<!-- 푸터 영역 (검색봇을 위해 기본 HTML 링크를 배치해 둡니다) -->
+<!-- 푸터 영역 (검색봇을 위한 기본 구조) -->
 <footer id="custom-dynamic-footer" style="padding: 25px 20px; font-size: 13px; color: #777; text-align: center; border-top: 1px solid #eee; margin-top: 40px; background: #fff;">
     <div class="footer-nav" style="margin-bottom: 14px;">
         <a href="/" class="nav-item" data-idx="0" style="color: #0066cc; text-decoration: none; margin: 0 5px; font-weight: 500;">홈</a> | 
@@ -1296,63 +1296,94 @@
         var footerEl = document.getElementById('custom-dynamic-footer');
         if (!footerEl) return;
 
-        // 1. 도메인 정리 및 실제 브랜드명(SLD) 지능형 추출
+        // ==========================================
+        // [설정] 브랜드명 추출 모드 선택
+        // 'subdomain' : site1.domain.com -> SITE1 (추천: 서브도메인별 독자 사이트일 때)
+        // 'root'      : site1.domain.com -> DOMAIN (전체 사이트가 하나의 본사 브랜드일 때)
+        // 'compound'  : site1.domain.com -> SITE1 DOMAIN (결합형)
+        // ==========================================
+        var BRAND_MODE = 'subdomain'; 
+
+        // 1. 호스트명 분석 및 도메인 구조 분해
         var host = (window.location.hostname || 'service.com').toLowerCase().replace(/^www\./, '');
         var parts = host.split('.');
-        var brandBase = parts[0];
 
-        // m.example.com, shop.example.co.kr 등 서브도메인 대응 로직
-        if (parts.length >= 3) {
-            var isCountryCode = (parts[parts.length - 1].length === 2 && parts[parts.length - 2].length === 2); // .co.kr 등
-            brandBase = isCountryCode ? (parts[parts.length - 3] || parts[0]) : parts[parts.length - 2];
+        // .co.kr, .or.kr 등 2자리 국가 도메인 판별
+        var isCountryCode = (parts.length >= 3 && parts[parts.length - 1].length === 2 && parts[parts.length - 2].length === 2);
+        var rootIndex = isCountryCode ? (parts.length - 3) : (parts.length - 2);
+        if (rootIndex < 0) rootIndex = 0;
+
+        var rootDomain = parts[rootIndex] || parts[0];
+        var subDomains = parts.slice(0, rootIndex);
+        var subPart = subDomains.length > 0 ? subDomains[0] : rootDomain;
+
+        var brandName = '';
+        if (BRAND_MODE === 'subdomain') {
+            brandName = subPart.toUpperCase();
+        } else if (BRAND_MODE === 'compound' && subDomains.length > 0) {
+            brandName = (subPart + ' ' + rootDomain).toUpperCase();
+        } else {
+            brandName = rootDomain.toUpperCase();
         }
-        var brandName = brandBase.toUpperCase();
 
-        // 2. 고유 해시 생성 (도메인별 0~3 인덱스 고정)
+        // 특수문자나 숫자만 있는 경우 방어
+        if (!brandName || /^[0-9]+$/.test(brandName)) {
+            brandName = rootDomain.toUpperCase();
+        }
+
+        // 2. 고유 해시 생성 (호스트 풀 네임 기반)
         var hash = 0;
         for (var i = 0; i < host.length; i++) {
             hash = ((hash << 5) - hash) + host.charCodeAt(i);
             hash |= 0;
         }
-        var idx = Math.abs(hash) % 4;
 
-        // 3. 앵커 텍스트 다변화 데이터
+        // 3. 다변화 데이터 풀 (6종으로 확장)
         var anchorLabels = [
             ["홈", "솔루션", "견적요약", "통합검색", "프로모션", "이용후기", "커뮤니티", "사이트맵"],
             ["메인", "서비스안내", "비용계산", "조건탐색", "혜택안내", "고객리뷰", "소통공간", "전체메뉴"],
             ["홈으로", "맞춤솔루션", "예상견적", "상세검색", "이벤트", "실제후기", "정보나눔", "서비스맵"],
-            ["HOME", "솔루션센터", "견적합산", "빠른검색", "제휴혜택", "평가·사례", "Q&A광장", "목차안내"]
+            ["HOME", "솔루션센터", "견적합산", "빠른검색", "제휴혜택", "평가·사례", "Q&A광장", "목차안내"],
+            ["메인으로", "핵심서비스", "비용조회", "필터검색", "특별혜택", "이용자리뷰", "열린마당", "사이트안내"],
+            ["시작페이지", "프로그램", "간편견적", "키워드검색", "진행이벤트", "생생후기", "게시판", "바로가기"]
         ];
 
-        // 4. 안내 센터 문구 패턴 4종
         var centerTexts = [
-            "<strong>" + brandName + " 안내센터</strong> | 상담 가능: 평일 09:30 ~ 18:00 (온라인 문의 365일 상시 접수)",
+            "<strong>" + brandName + " 안내센터</strong> | 상담 가능: 평일 09:30 ~ 18:00 (온라인 접수 365일 상시 운영)",
             "<strong>" + brandName + " 고객지원실</strong> | 운영시간: 평일 09:30 ~ 18:00 (비대면 접수 24시간 연중무휴)",
             "<strong>" + brandName + " 이용자 지원팀</strong> | 접수시간: 평일 09:30 - 18:00 (웹 접수창구 상시 운영)",
-            "<strong>" + brandName + " 온라인 센터</strong> | 업무시간: 월~금 09:30 ~ 18:00 (온라인 간편신청 연중무휴)"
+            "<strong>" + brandName + " 온라인 센터</strong> | 업무시간: 월~금 09:30 ~ 18:00 (온라인 간편신청 연중무휴)",
+            "<strong>" + brandName + " 컨설팅 지원본부</strong> | 안내시간: 평일 09:30 ~ 18:00 (실시간 문의 365일 접수)",
+            "<strong>" + brandName + " 통합상담실</strong> | 접수시간: 평일 09:30 ~ 18:00 (주말/공휴일 온라인 간편접수 가능)"
         ];
 
-        // 5. 면책 고지 문구 패턴 4종
         var disclaimerTexts = [
             "본 웹사이트는 이용자 맞춤 조건 비교 및 제휴 상담 연결을 돕는 정보 제공처이며, 실제 용역 이행 및 계약 체결의 책임은 제휴사에 귀속됩니다.",
             "본 플랫폼은 서비스 비교 및 전문 상담 연결을 중개·안내하는 공간으로, 최종 계약 및 사후 관리에 관한 일체의 책임은 실제 공급 업체에 있습니다.",
             "본 사이트에서 안내하는 정보는 단순 비교 및 신청 중개 목적이며, 서비스 제공과 관련된 모든 법적 권리와 의무는 해당 공급 주체에 존재합니다.",
-            "본 서비스는 이용자 편의를 위한 조건별 상담 안내 플랫폼이며, 개별 계약 이행 및 거래 책임은 실제 공급 계약을 맺는 제휴사에 있습니다."
+            "본 서비스는 이용자 편의를 위한 조건별 상담 안내 플랫폼이며, 개별 계약 이행 및 거래 책임은 실제 공급 계약을 맺는 제휴사에 있습니다.",
+            "당사는 서비스 정보 제공 및 상담 연결 중개 플랫폼으로서 직접적인 계약 당사자가 아니며, 서비스 품질 및 계약 이행 책임은 개별 제휴사에 있습니다.",
+            "본 포털은 이용자 중심의 조건 비교 정보를 제공하며, 실제 거래 절차 진행 및 분쟁 해결은 상담을 진행하는 공급 업체의 규정을 따릅니다."
         ];
 
-        // 6. 기존 DOM 요소에 텍스트 주입 (재렌더링 깜빡임 방지 & SEO 최적화)
+        // 4. 조합형 인덱스 추출 (각각 다른 소수를 곱해 6 x 6 x 6 = 216가지 조합 형성)
+        var navIdx = Math.abs(hash) % anchorLabels.length;
+        var centerIdx = Math.abs(Math.imul(hash, 31)) % centerTexts.length;
+        var disclaimerIdx = Math.abs(Math.imul(hash, 73)) % disclaimerTexts.length;
+
+        // 5. DOM 텍스트 교체
         var navItems = footerEl.querySelectorAll('.nav-item');
         navItems.forEach(function(item, index) {
-            if (anchorLabels[idx][index]) {
-                item.textContent = anchorLabels[idx][index];
+            if (anchorLabels[navIdx][index]) {
+                item.textContent = anchorLabels[navIdx][index];
             }
         });
 
         var centerEl = footerEl.querySelector('.center-text');
-        if (centerEl) centerEl.innerHTML = centerTexts[idx];
+        if (centerEl) centerEl.innerHTML = centerTexts[centerIdx];
 
         var disclaimerEl = footerEl.querySelector('.disclaimer-text');
-        if (disclaimerEl) disclaimerEl.textContent = disclaimerTexts[idx];
+        if (disclaimerEl) disclaimerEl.textContent = disclaimerTexts[disclaimerIdx];
 
         var copyrightEl = footerEl.querySelector('.copyright-text');
         if (copyrightEl) {
@@ -1360,7 +1391,6 @@
         }
     }
 
-    // 문서 로딩이 완료된 시점에 안전하게 실행
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initDynamicFooter);
     } else {
@@ -1368,6 +1398,7 @@
     }
 })();
 </script>
+
 
 
 
